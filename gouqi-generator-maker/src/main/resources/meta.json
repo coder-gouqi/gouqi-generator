@@ -1,12 +1,12 @@
 {
-  "name": "acm-template-generator",
+  "name": "acm-template",
   "description": "示例生成器",
   "basePackage": "com.gouqi",
   "version": "1.0",
   "author": "gouqi",
   "createTime": "2023-1-26",
   "fileConfig": {
-    "inputRootPath": "gouqi-generator/acm-template",
+    "inputRootPath": "E:/personal_program/gouqi-generator/acm-template",
     "outputRootPath": "generated",
     "type": "dir",
     "files": [
