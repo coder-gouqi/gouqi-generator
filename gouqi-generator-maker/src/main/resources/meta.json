@@ -6,8 +6,9 @@
   "author": "gouqi",
   "createTime": "2023-1-26",
   "fileConfig": {
-    "inputRootPath": "E:/personal_program/gouqi-generator/acm-template",
+    "inputRootPath": ".source/acm-template",
     "outputRootPath": "generated",
+    "sourceRootPath": "E:/personal_program/gouqi-generator/acm-template",
     "type": "dir",
     "files": [
       {
