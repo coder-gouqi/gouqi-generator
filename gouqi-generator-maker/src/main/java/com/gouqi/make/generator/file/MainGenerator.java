@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * 核心生成器
  */
-public class FileGenerator {
+public class MainGenerator {
 
     /**
      * 生成
@@ -35,9 +35,9 @@ public class FileGenerator {
 
     public static void main(String[] args) throws TemplateException, IOException {
         DataModel dataModel = new DataModel();
-        dataModel.setAuthor("gouqi");
+        dataModel.mainTemplate.setAuthor("gouqi");
         dataModel.setLoop(true);
-        dataModel.setOutputText("求和结果：");
+        dataModel.mainTemplate.setOutputText("求和结果：");
         doGenerate(dataModel);
     }
 }

@@ -14,13 +14,23 @@ public class DataModel {
     private boolean loop;
 
     /**
-     * 作者注释
+     * 核心模板
      */
-    private String author;
+    public MainTemplate mainTemplate = new MainTemplate();
 
     /**
-     * 输出信息
+     * 用于生成核心模板文件
      */
-    private String outputText;
+    @Data
+    public static class MainTemplate {
+        /**
+         * 作者注释
+         */
+        public String author = "gouqi";
 
+        /**
+         * 输出信息
+         */
+        public String outputText = "Hello World!";
+    }
 }
