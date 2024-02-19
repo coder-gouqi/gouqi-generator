@@ -31,6 +31,6 @@ public class JarGenerator {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        doGenerate("E:\\personal_program\\gouqi-generator\\gouqi-generator-maker\\generated\\acm-template-generator");
+        doGenerate("E:\\personal_program\\gouqi-generator\\gouqi-generator-maker\\generated\\acm-template");
     }
 }
