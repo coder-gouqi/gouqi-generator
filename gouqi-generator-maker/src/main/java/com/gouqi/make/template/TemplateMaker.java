@@ -13,9 +13,9 @@ import com.gouqi.make.meta.enums.FileTypeEnum;
 import com.gouqi.make.model.TemplateMakerConfig;
 import com.gouqi.make.model.TemplateMakerFileConfig;
 import com.gouqi.make.model.TemplateMakerModelConfig;
+import com.gouqi.make.model.TemplateMakerOutputConfig;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +34,7 @@ public class TemplateMaker {
      * @param id
      * @return
      */
-    public static long makeTemplate(Meta newMeta, String originProjectPath, TemplateMakerFileConfig templateMakerFileConfig, TemplateMakerModelConfig templateMakerModelConfig, Long id) {
+    public static long makeTemplate(Meta newMeta, String originProjectPath, TemplateMakerFileConfig templateMakerFileConfig, TemplateMakerModelConfig templateMakerModelConfig, TemplateMakerOutputConfig templateMakerOutputConfig, Long id) {
         // 没有 id 则生成
         if (id == null) {
             id = IdUtil.getSnowflakeNextId();
@@ -53,8 +53,9 @@ public class TemplateMaker {
         }
 
         // 一、输入信息
-        // 输入文件信息
-        String sourceRootPath = templatePath + File.separator + FileUtil.getLastPathEle(Paths.get(originProjectPath)).toString();
+        // 输入文件信息，获取到项目根目录
+        String sourceRootPath = FileUtil.loopFiles(new File(templatePath), 1, null).stream().filter(File::isDirectory).findFirst().orElseThrow(RuntimeException::new).getAbsolutePath();
+
         // 注意 win 系统需要对路径进行转义
         sourceRootPath = sourceRootPath.replaceAll("\\\\", "/");
         List<TemplateMakerFileConfig.FileInfoConfig> fileConfigInfoList = templateMakerFileConfig.getFiles();
@@ -99,7 +100,16 @@ public class TemplateMaker {
             modelInfoList.addAll(newModelInfoList);
         }
 
-        // 2. 输出元信息文件
+        // 2. 额外的输出配置
+        if (templateMakerOutputConfig != null) {
+            // 文件外层和分组去重
+            if (templateMakerOutputConfig.isRemoveGroupFilesFromRoot()) {
+                List<Meta.FileConfig.FileInfo> fileInfoList = newMeta.getFileConfig().getFiles();
+                newMeta.getFileConfig().setFiles(TemplateMakerUtils.removeGroupFilesFromRoot(fileInfoList));
+            }
+        }
+
+        // 3. 输出元信息文件
         FileUtil.writeUtf8String(JSONUtil.toJsonPrettyStr(newMeta), metaOutputPath);
         return id;
     }
@@ -115,9 +125,10 @@ public class TemplateMaker {
         String originProjectPath = templateMakerConfig.getOriginProjectPath();
         TemplateMakerFileConfig templateMakerFileConfig = templateMakerConfig.getFileConfig();
         TemplateMakerModelConfig templateMakerModelConfig = templateMakerConfig.getModelConfig();
+        TemplateMakerOutputConfig templateMakerOutputConfig = templateMakerConfig.getOutputConfig();
         Long id = templateMakerConfig.getId();
 
-        return makeTemplate(meta, originProjectPath, templateMakerFileConfig, templateMakerModelConfig, id);
+        return makeTemplate(meta, originProjectPath, templateMakerFileConfig, templateMakerModelConfig, templateMakerOutputConfig, id);
     }
 
     /**
@@ -128,7 +139,7 @@ public class TemplateMaker {
      * @param inputFile
      * @return
      */
-    private static Meta.FileConfig.FileInfo makeFileTemplate(TemplateMakerModelConfig templateMakerModelConfig, String sourceRootPath, File inputFile) {
+    private static Meta.FileConfig.FileInfo makeFileTemplate(TemplateMakerModelConfig templateMakerModelConfig, String sourceRootPath, File inputFile, TemplateMakerFileConfig.FileInfoConfig fileInfoConfig) {
         // 要挖坑的文件绝对路径（用于制作模板）
         // 注意 win 系统需要对路径进行转义
         String fileInputAbsolutePath = inputFile.getAbsolutePath().replaceAll("\\\\", "/");
@@ -171,6 +182,7 @@ public class TemplateMaker {
         // 注意文件输入路径要和输出路径反转
         fileInfo.setInputPath(fileOutputPath);
         fileInfo.setOutputPath(fileInputPath);
+        fileInfo.setCondition(fileInfoConfig.getCondition());
         fileInfo.setType(FileTypeEnum.FILE.getValue());
         fileInfo.setGenerateType(FileGenerateTypeEnum.DYNAMIC.getValue());
 
@@ -216,7 +228,7 @@ public class TemplateMaker {
             List<File> fileList = FileFilter.doFilter(inputFilePath, fileInfoConfig.getFilterConfigList());
             fileList = fileList.stream().filter(file -> !file.getAbsolutePath().endsWith(".ftl")).collect(Collectors.toList());
             for (File file : fileList) {
-                Meta.FileConfig.FileInfo fileInfo = makeFileTemplate(templateMakerModelConfig, sourceRootPath, file);
+                Meta.FileConfig.FileInfo fileInfo = makeFileTemplate(templateMakerModelConfig, sourceRootPath, file, fileInfoConfig);
                 newFileInfoList.add(fileInfo);
             }
         }
@@ -265,13 +277,9 @@ public class TemplateMaker {
         // - 如果是模型组
         TemplateMakerModelConfig.ModelGroupConfig modelGroupConfig = templateMakerModelConfig.getModelGroupConfig();
         if (modelGroupConfig != null) {
-            String condition = modelGroupConfig.getCondition();
-            String groupKey = modelGroupConfig.getGroupKey();
-            String groupName = modelGroupConfig.getGroupName();
+            // 复制变量
             Meta.ModelConfig.ModelInfo groupModelInfo = new Meta.ModelConfig.ModelInfo();
-            groupModelInfo.setGroupKey(groupKey);
-            groupModelInfo.setGroupName(groupName);
-            groupModelInfo.setCondition(condition);
+            BeanUtil.copyProperties(modelGroupConfig, groupModelInfo);
 
             // 模型全放到一个分组内
             groupModelInfo.setModels(inputModelInfoList);
