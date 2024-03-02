@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "name": "acm-template",
+    "description": "ACM 模板生成器"
+  },
+  "originProjectPath": "../../../springboot",
+  "fileConfig": {
+    "files": [
+      {
+        "path": "src/main/java/com/gouqi/common"
+      }
+    ]
+  },
+  "modelConfig": {
+    "models": [
+      {
+        "fieldName": "className",
+        "type": "String",
+        "defaultValue": true,
+        "replaceText": "BaseResponse"
+      }
+    ]
+  }
+}

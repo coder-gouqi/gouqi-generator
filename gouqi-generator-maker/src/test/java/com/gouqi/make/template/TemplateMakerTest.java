@@ -1,6 +1,9 @@
 package com.gouqi.make.template;
 
+import cn.hutool.core.io.resource.ResourceUtil;
+import cn.hutool.json.JSONUtil;
 import com.gouqi.make.meta.Meta;
+import com.gouqi.make.model.TemplateMakerConfig;
 import com.gouqi.make.model.TemplateMakerFileConfig;
 import com.gouqi.make.model.TemplateMakerModelConfig;
 import org.junit.Test;
@@ -80,6 +83,29 @@ public class TemplateMakerTest {
         templateMakerModelConfig.setModels(modelInfoConfigList);
 
         long id = TemplateMaker.makeTemplate(meta, originProjectPath, templateMakerFileConfig, templateMakerModelConfig, 1762815324237357056L);
+        System.out.println(id);
+    }
+
+    /**
+     * 使用 JSON 制作模板
+     */
+    @Test
+    public void testMakeTemplateWithJSON() {
+        String configStr = ResourceUtil.readUtf8Str("templateMaker.json");
+        TemplateMakerConfig templateMakerConfig = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
+        long id = TemplateMaker.makeTemplate(templateMakerConfig);
+        System.out.println(id);
+    }
+
+    /**
+     * 制作 SpringBoot 模板
+     */
+    @Test
+    public void makeSpringBootTemplate() {
+        String rootPath = "examples/springboot/";
+        String configStr = ResourceUtil.readUtf8Str(rootPath + "templateMaker.json");
+        TemplateMakerConfig templateMakerConfig = JSONUtil.toBean(configStr, TemplateMakerConfig.class);
+        long id = TemplateMaker.makeTemplate(templateMakerConfig);
         System.out.println(id);
     }
 }

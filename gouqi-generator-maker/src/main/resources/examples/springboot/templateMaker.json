@@ -1,0 +1,8 @@
+{
+  "id": 1,
+  "meta": {
+    "name": "springboot",
+    "description": "Spring Boot 模板项目生成器"
+  },
+  "originProjectPath": "../../../springboot"
+}
