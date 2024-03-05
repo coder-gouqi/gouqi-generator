@@ -1,5 +1,5 @@
-// @ts-ignore
 /* eslint-disable */
+// @ts-ignore
 import { request } from '@umijs/max';
 
 /** addUser POST /api/user/add */
