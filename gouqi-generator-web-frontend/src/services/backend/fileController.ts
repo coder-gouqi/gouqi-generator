@@ -1,5 +1,5 @@
-/* eslint-disable */
 // @ts-ignore
+/* eslint-disable */
 import { request } from '@umijs/max';
 
 /** testDownloadFile GET /api/file/test/download */

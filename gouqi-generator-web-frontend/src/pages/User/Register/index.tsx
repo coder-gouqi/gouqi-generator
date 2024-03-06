@@ -3,7 +3,7 @@ import { userRegisterUsingPost } from '@/services/backend/userController';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { LoginForm, ProFormText } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { Helmet, history, useModel } from '@umijs/max';
+import { Helmet, history } from '@umijs/max';
 import { message, Tabs } from 'antd';
 import React, { useState } from 'react';
 import { Link } from 'umi';
@@ -14,7 +14,6 @@ import Settings from '../../../../config/defaultSettings';
  */
 const userRegisterPage: React.FC = () => {
   const [type, setType] = useState<string>('account');
-  const { initialState, setInitialState } = useModel('@@initialState');
   const containerClassName = useEmotionCss(() => {
     return {
       display: 'flex',

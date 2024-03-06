@@ -11,4 +11,4 @@ export const BACKEND_HOST_PROD = 'https://www.yuque.com/dogqi';
 /**
  * COS 访问地址
  */
-export const COS_HOST = 'https://gouqi.icu';
+export const COS_HOST = 'https://www.yuque.com/dogqi';
