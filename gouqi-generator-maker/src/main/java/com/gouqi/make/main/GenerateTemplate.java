@@ -49,6 +49,7 @@ public abstract class GenerateTemplate {
      * @param sourceCopyDestPath
      * @param jarPath
      * @param shellOutputFilePath
+     * @return 产物包路径
      */
     protected String buildDist(String outputPath, String sourceCopyDestPath, String jarPath, String shellOutputFilePath) {
         String distOutputPath = outputPath + "-dist";
@@ -59,6 +60,7 @@ public abstract class GenerateTemplate {
         FileUtil.copy(jarAbsolutePath, targetAbsolutePath, true);
         // 拷贝脚本文件
         FileUtil.copy(shellOutputFilePath, distOutputPath, true);
+        FileUtil.copy(shellOutputFilePath + ".bat", distOutputPath, true);
         // 拷贝源模板文件
         FileUtil.copy(sourceCopyDestPath, distOutputPath, true);
         return distOutputPath;
@@ -131,12 +133,12 @@ public abstract class GenerateTemplate {
 
         // cli.command.ListCommand
         inputFilePath = inputResourcePath + File.separator + "templates/java/cli/command/ListCommand.java.ftl";
-        outputFilePath = outputBaseJavaPackagePath + "/cli/command/ListCommand.java";
+        outputFilePath = outputBaseJavaPackagePath + "/cli/command/ListCommand.java.ftl";
         DynamicFileGenerator.doGenerate(inputFilePath, outputFilePath, meta);
 
         // cli.CommandExecutor
         inputFilePath = inputResourcePath + File.separator + "templates/java/cli/CommandExecutor.java.ftl";
-        outputFilePath = outputBaseJavaPackagePath + "/cli/CommandExecutor.java";
+        outputFilePath = outputBaseJavaPackagePath + "/cli/CommandExecutor.java.ftl";
         DynamicFileGenerator.doGenerate(inputFilePath, outputFilePath, meta);
 
         // Main

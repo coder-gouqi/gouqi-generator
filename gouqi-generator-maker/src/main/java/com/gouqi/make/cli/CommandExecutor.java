@@ -2,6 +2,7 @@ package com.gouqi.make.cli;
 
 import com.gouqi.make.cli.command.ConfigCommand;
 import com.gouqi.make.cli.command.GenerateCommand;
+import com.gouqi.make.cli.command.JsonGenerateCommand;
 import com.gouqi.make.cli.command.ListCommand;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
@@ -12,7 +13,11 @@ public class CommandExecutor implements Runnable {
     private final CommandLine commandLine;
 
     {
-        commandLine = new CommandLine(this).addSubcommand(new GenerateCommand()).addSubcommand(new ConfigCommand()).addSubcommand(new ListCommand());
+        commandLine = new CommandLine(this)
+                .addSubcommand(new GenerateCommand())
+                .addSubcommand(new ConfigCommand())
+                .addSubcommand(new ListCommand())
+                .addSubcommand(new JsonGenerateCommand());
     }
 
     @Override
