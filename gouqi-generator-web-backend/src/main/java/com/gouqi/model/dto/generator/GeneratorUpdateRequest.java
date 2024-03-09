@@ -1,6 +1,6 @@
 package com.gouqi.model.dto.generator;
 
-import com.gouqi.meta.Meta;
+import com.gouqi.make.meta.Meta;
 import lombok.Data;
 
 import java.io.Serializable;

@@ -1,7 +1,7 @@
 package com.gouqi.model.vo;
 
 import cn.hutool.json.JSONUtil;
-import com.gouqi.meta.Meta;
+import com.gouqi.make.meta.Meta;
 import com.gouqi.model.entity.Generator;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;

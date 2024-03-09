@@ -17,6 +17,18 @@
         <java.version>1.8</java.version>
     </properties>
     <dependencies>
+        <!-- 引入 maker 项目 -->
+        <dependency>
+            <groupId>com.gouqi.generator</groupId>
+            <artifactId>gouqi-generator-make</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- https://freemarker.apache.org/index.html -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.32</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
@@ -49,7 +61,7 @@
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
         </dependency>
-<!--         https://doc.xiaominfo.com/docs/quick-start#openapi2-->
+        <!--         https://doc.xiaominfo.com/docs/quick-start#openapi2-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
